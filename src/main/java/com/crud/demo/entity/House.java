@@ -11,7 +11,7 @@ public class House {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "created")
     @Temporal(TemporalType.TIMESTAMP)

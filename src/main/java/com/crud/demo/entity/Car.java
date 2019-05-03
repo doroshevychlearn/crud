@@ -10,7 +10,10 @@ public class Car {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "age")
     @Temporal(TemporalType.TIMESTAMP)
@@ -22,7 +25,8 @@ public class Car {
     public Car() {
     }
 
-    public Car(Date created, int doorCount) {
+    public Car(String name, Date created, int doorCount) {
+        this.name = name;
         this.created = created;
         this.doorCount = doorCount;
     }
@@ -33,6 +37,14 @@ public class Car {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Date getCreated() {
@@ -54,22 +66,24 @@ public class Car {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Car)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Car car = (Car) o;
-        return getId() == car.getId() &&
-                getDoorCount() == car.getDoorCount() &&
-                Objects.equals(getCreated(), car.getCreated());
+        return id == car.id &&
+                doorCount == car.doorCount &&
+                Objects.equals(name, car.name) &&
+                Objects.equals(created, car.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getCreated(), getDoorCount());
+        return Objects.hash(id, name, created, doorCount);
     }
 
     @Override
     public String toString() {
         return "Car{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", created=" + created +
                 ", doorCount=" + doorCount +
                 '}';
@@ -77,10 +91,16 @@ public class Car {
 
     public static class Builder {
 
+        private String name;
         private Date created;
         private int doorCount;
 
         public Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
         }
 
         public Builder created(Date created) {
@@ -94,7 +114,7 @@ public class Car {
         }
 
         public Car build() {
-            return new Car(created, doorCount);
+            return new Car(name, created, doorCount);
         }
 
     }
