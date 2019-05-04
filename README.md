@@ -2,8 +2,8 @@
 
 <h3>Before run you need create database CRUD</h3>
     
-<b>create database crud;</b>
+<i style="color: gray">create database crud;</i>
 
-Also change username and password to your mysql server in file:
+<h3Also change username and password to your mysql server in file:</h3
 
-<b>src/main/resources/application.properties</b>
+<i style="color: gray">src/main/resources/application.properties</i>
