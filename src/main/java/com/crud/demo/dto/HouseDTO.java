@@ -2,31 +2,17 @@ package com.crud.demo.dto;
 
 import java.util.Date;
 
+import lombok.Data;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HouseDTO {
+    private Long id;
     private Date created;
     private int roomCount;
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public int getRoomCount() {
-        return roomCount;
-    }
-
-    public void setRoomCount(int roomCount) {
-        this.roomCount = roomCount;
-    }
-
-    @Override
-    public String toString() {
-        return "HouseDTO{" +
-                "created=" + created +
-                ", roomCount=" + roomCount +
-                '}';
-    }
 }

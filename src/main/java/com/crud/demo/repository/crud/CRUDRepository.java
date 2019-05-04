@@ -5,8 +5,7 @@ import java.util.List;
 
 public interface CRUDRepository <E, ID extends Serializable>{
     E getOne(ID id);
-    E save(E entity);
-    void delete(E e);
+    void save(String sql, Object... values);
     List<E> findAll();
     void delete(ID id);
 }

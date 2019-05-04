@@ -1,16 +1,22 @@
 package com.crud.demo.service.impl;
 
+import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
+
 import com.crud.demo.dto.PersonDTO;
 import com.crud.demo.entity.Person;
-import com.crud.demo.repository.PersonRepository;
+
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+
 import com.crud.demo.service.PersonService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.crud.demo.repository.PersonRepository;
 
-import java.util.List;
-import java.util.Set;
-
-import static org.springframework.beans.BeanUtils.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class PersonServiceImpl implements PersonService {
@@ -25,53 +31,62 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deletePerson(Long id) {
-
+        this.personRepository.delete(id);
     }
 
     @Override
     public Set<PersonDTO> getAllPersons() {
-        return null;
-    }
-
-    @Override
-    public void deletePerson(Person person) {
-
+        List<Person> people = this.personRepository.findAll();
+        if (isNull(people)) {
+            people = new ArrayList<>();
+        }
+        return people.stream().map(person -> PersonDTO.builder()
+                .id(person.getId())
+                .age(person.getAge())
+                .lastName(person.getLastName())
+                .firstName(person.getFirstName())
+                .build()).collect(Collectors.toSet());
     }
 
     @Override
     public void savePerson(PersonDTO personDTO) {
-
+        Person person = Person.builder()
+                .id(personDTO.getId())
+                .age(personDTO.getAge())
+                .lastName(personDTO.getLastName())
+                .firstName(personDTO.getFirstName())
+                .build();
+        this.personRepository.save(person);
     }
 
     @Override
-    public Person getOne(Long id) {
-        return null;
-    }
-
-    @Override
-    public Person save(Person person) {
-        return null;
-    }
-
-    @Override
-    public void delete(Person person) {
-
-    }
-
-    @Override
-    public List<Person> findAll() {
-        return null;
-    }
-
-    @Override
-    public void delete(Long id) {
-
+    public void updatePeron(PersonDTO personDTO) {
+        Person person = this.personRepository.getOne(personDTO.getId());
+        if (nonNull(person)) {
+            person = Person.builder()
+                    .id(personDTO.getId())
+                    .age(personDTO.getAge())
+                    .lastName(personDTO.getLastName())
+                    .firstName(personDTO.getFirstName())
+                    .build();
+            this.personRepository.save(person);
+        } else {
+            throw new IllegalArgumentException("The person does not exist!");
+        }
     }
 
     @Override
     public PersonDTO getPersonById(Long id) {
         PersonDTO personDTO = new PersonDTO();
-        copyProperties(this.personRepository.getOne(id), personDTO);
+        Person person = this.personRepository.getOne(id);
+        if (nonNull(person)) {
+            personDTO = PersonDTO.builder()
+                    .id(person.getId())
+                    .age(person.getAge())
+                    .lastName(person.getLastName())
+                    .firstName(person.getFirstName())
+                    .build();
+        }
         return personDTO;
     }
 
